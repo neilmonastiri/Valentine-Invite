@@ -3,104 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>For My Love</title>
+  <title>Valentine</title>
   <style>
     :root {
-      --bg-1: #0b1027;
-      --bg-2: #241733;
-      --bg-3: #3a1f45;
-      --text: #fff8fc;
-      --muted: #f4ddea;
-      --glass: rgba(255, 244, 250, 0.12);
-      --line: rgba(255, 228, 241, 0.3);
+      --bg-1: #0a1026;
+      --bg-2: #2a1738;
+      --bg-3: #4b1f4b;
+      --glass: rgba(255, 243, 249, 0.1);
+      --line: rgba(255, 221, 236, 0.28);
+      --text: #fff6fb;
       --pink: #ff7fb8;
-      --pink-strong: #ff5ea5;
-      --no: #c79ab5;
-      --shadow: 0 20px 50px rgba(6, 4, 12, 0.45);
+      --pink-strong: #ff5da4;
+      --muted: #c49ab4;
+      --shadow: 0 26px 60px rgba(8, 5, 16, 0.52);
     }
 
     * { box-sizing: border-box; }
     html, body { margin: 0; min-height: 100%; }
+
     body {
       font-family: "Inter", "Segoe UI", system-ui, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(1300px 700px at 10% -10%, rgba(255, 189, 224, 0.2), transparent 45%),
-        radial-gradient(800px 500px at 90% 110%, rgba(255, 130, 203, 0.16), transparent 50%),
-        linear-gradient(165deg, var(--bg-1), var(--bg-2) 50%, var(--bg-3));
-      overflow-x: hidden;
-    }
-
-    .scene-dim {
-      position: fixed;
-      inset: 0;
-      background: rgba(5, 4, 14, 0.35);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 1.1s ease;
-      z-index: 4;
-    }
-
-    .scene-dim.show { opacity: 1; }
-
-    .petal-layer, .particle-layer {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
+        radial-gradient(1200px 700px at 8% -10%, rgba(255, 177, 218, 0.22), transparent 45%),
+        radial-gradient(900px 520px at 95% 110%, rgba(255, 129, 197, 0.18), transparent 52%),
+        linear-gradient(165deg, var(--bg-1), var(--bg-2) 52%, var(--bg-3));
       overflow: hidden;
+    }
+
+    .petal-layer, .sparkle-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
       z-index: 1;
+      overflow: hidden;
     }
 
     .petal {
       position: absolute;
-      top: -12vh;
-      width: clamp(8px, 1.9vw, 14px);
-      height: clamp(6px, 1.4vw, 10px);
-      border-radius: 80% 20% 65% 35%;
-      background: radial-gradient(circle at 28% 30%, #ffeff7, #ffc2dc 74%);
-      opacity: 0.72;
-      filter: blur(.1px);
+      top: -15vh;
+      width: clamp(8px, 2vw, 14px);
+      height: clamp(6px, 1.5vw, 10px);
+      border-radius: 80% 20% 72% 28%;
+      background: radial-gradient(circle at 28% 30%, #ffeff8, #ffc2dc 76%);
+      opacity: 0.7;
       animation: fall linear infinite;
-      transform: rotate(24deg);
+      transform: rotate(20deg);
       pointer-events: auto;
       cursor: pointer;
     }
 
     @keyframes fall {
-      0% { transform: translate3d(0, -8vh, 0) rotate(0deg); }
-      100% { transform: translate3d(var(--drift), 108vh, 0) rotate(290deg); }
+      from { transform: translate3d(0, -8vh, 0) rotate(0deg); }
+      to { transform: translate3d(var(--drift), 108vh, 0) rotate(280deg); }
     }
 
-    .particle {
-      position: absolute;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: rgba(255, 221, 240, 0.72);
-      filter: blur(.2px);
-      animation: floaty linear infinite;
-    }
-
-    @keyframes floaty {
-      0%, 100% { transform: translateY(0); opacity: .2; }
-      50% { transform: translateY(-12px); opacity: .66; }
-    }
-
-    .heart-haze {
+    .scene-dim {
       position: fixed;
       inset: 0;
+      background: rgba(6, 4, 14, 0.36);
+      opacity: 0;
+      transition: opacity .35s ease;
       z-index: 3;
       pointer-events: none;
-      opacity: 0;
-      transition: opacity 1.2s ease;
-      background:
-        radial-gradient(circle at 43% 43%, rgba(255, 174, 223, 0.26), transparent 16%),
-        radial-gradient(circle at 57% 43%, rgba(255, 174, 223, 0.26), transparent 16%),
-        radial-gradient(ellipse at 50% 62%, rgba(255, 138, 203, 0.2), transparent 25%);
-      filter: blur(19px);
     }
 
-    .heart-haze.show { opacity: 1; }
+    .scene-dim.show { opacity: 1; }
 
     main {
       min-height: 100vh;
@@ -108,400 +76,409 @@
       place-items: center;
       padding: 1rem;
       position: relative;
-      z-index: 5;
+      z-index: 4;
     }
 
-    .card {
+    .stage {
       width: min(92vw, 560px);
-      border-radius: 28px;
-      background: var(--glass);
-      border: 1px solid var(--line);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: var(--shadow), 0 0 35px rgba(255, 174, 220, 0.18);
-      padding: clamp(1.5rem, 4.5vw, 2.4rem);
-      text-align: center;
+      min-height: 320px;
+      display: grid;
+      place-items: center;
     }
 
-    h1 {
-      margin: 0;
-      font-size: clamp(1.9rem, 8vw, 2.6rem);
-      font-weight: 600;
-      letter-spacing: .03em;
-    }
-
-    .sub {
-      margin: .8rem auto 0;
-      max-width: 26ch;
-      font-size: clamp(.98rem, 3.9vw, 1.12rem);
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .focus-blur {
-      filter: blur(2px) saturate(0.92);
-      transition: filter 1s ease;
-    }
-
-    .envelope-wrap {
-      position: fixed;
-      right: 16px;
-      bottom: 16px;
-      z-index: 7;
-      opacity: 0;
-      transform: translateY(16px) scale(.9);
-      pointer-events: none;
-      transition: all .7s ease;
-    }
-
-    .envelope-wrap.show {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      pointer-events: auto;
-      animation: bounce 1.25s ease;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0) scale(1); }
-      35% { transform: translateY(-7px) scale(1.03); }
-      60% { transform: translateY(2px) scale(.99); }
-    }
-
-    .envelope {
-      width: 76px;
-      height: 54px;
-      border-radius: 0 0 10px 10px;
-      background: #ffe7f1;
-      border: 1px solid #f3bdd3;
+    .egg-wrap {
       position: relative;
+      width: min(240px, 66vw);
+      aspect-ratio: 0.75;
+      display: grid;
+      place-items: center;
       cursor: pointer;
-      box-shadow: 0 13px 24px rgba(7, 5, 16, .45);
+      transition: transform .2s ease;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .envelope::before,
-    .envelope::after {
-      content: "";
+    .egg-wrap:active { transform: scale(.98); }
+
+    .egg-shell {
       position: absolute;
-      width: 0;
-      height: 0;
-      border-left: 38px solid transparent;
-      border-right: 38px solid transparent;
-      left: 0;
-      right: 0;
-      margin: auto;
+      inset: 0;
+      border-radius: 50% 50% 46% 46% / 58% 58% 42% 42%;
+      background:
+        radial-gradient(circle at 34% 24%, rgba(255, 255, 255, 0.8), transparent 28%),
+        radial-gradient(circle at 65% 66%, rgba(255, 194, 227, 0.16), transparent 35%),
+        linear-gradient(180deg, #fff2f8, #ffe1ef 64%, #ffd4e8);
+      border: 1px solid rgba(255, 210, 232, 0.8);
+      box-shadow:
+        0 0 35px rgba(255, 183, 221, 0.46),
+        0 20px 40px rgba(7, 5, 16, 0.5);
+      transition: transform .32s ease, opacity .35s ease;
     }
 
-    .envelope::before {
-      top: 1px;
-      border-top: 29px solid #ffd2e4;
-      transform-origin: center top;
-      transition: transform .7s ease;
+    .egg-shell.left,
+    .egg-shell.right {
+      clip-path: inset(0 0 0 0 round 50% 50% 46% 46% / 58% 58% 42% 42%);
+    }
+
+    .egg-shell.left { clip-path: polygon(0 0, 56% 0, 50% 100%, 0 100%); }
+    .egg-shell.right { clip-path: polygon(46% 0, 100% 0, 100% 100%, 50% 100%); }
+
+    .egg-shine {
+      position: absolute;
+      width: 70%;
+      height: 70%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 30%, rgba(255, 255, 255, 0.75), transparent 48%);
+      filter: blur(1px);
+      pointer-events: none;
       z-index: 2;
     }
 
-    .envelope::after {
-      bottom: 0;
-      border-bottom: 27px solid #ffa8cc;
+    .cracks {
+      position: absolute;
+      inset: 6% 10% 8%;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .crack-line {
+      position: absolute;
+      background: linear-gradient(180deg, rgba(178, 114, 150, 0.1), rgba(152, 86, 127, 0.55));
+      border-radius: 999px;
+      opacity: 0;
+      transform-origin: top center;
+      transition: opacity .2s ease;
+    }
+
+    .c1 { width: 3px; height: 28%; left: 52%; top: 16%; transform: rotate(10deg); }
+    .c2 { width: 3px; height: 26%; left: 45%; top: 26%; transform: rotate(-26deg); }
+    .c3 { width: 3px; height: 23%; left: 56%; top: 35%; transform: rotate(29deg); }
+    .c4 { width: 2px; height: 19%; left: 40%; top: 40%; transform: rotate(-42deg); }
+    .c5 { width: 2px; height: 17%; left: 60%; top: 47%; transform: rotate(42deg); }
+    .c6 { width: 2px; height: 14%; left: 49%; top: 56%; transform: rotate(8deg); }
+
+    .egg-wrap[data-crack="1"] .c1,
+    .egg-wrap[data-crack="2"] .c1,
+    .egg-wrap[data-crack="2"] .c2,
+    .egg-wrap[data-crack="3"] .c1,
+    .egg-wrap[data-crack="3"] .c2,
+    .egg-wrap[data-crack="3"] .c3,
+    .egg-wrap[data-crack="4"] .c1,
+    .egg-wrap[data-crack="4"] .c2,
+    .egg-wrap[data-crack="4"] .c3,
+    .egg-wrap[data-crack="4"] .c4,
+    .egg-wrap[data-crack="5"] .c1,
+    .egg-wrap[data-crack="5"] .c2,
+    .egg-wrap[data-crack="5"] .c3,
+    .egg-wrap[data-crack="5"] .c4,
+    .egg-wrap[data-crack="5"] .c5,
+    .egg-wrap[data-crack="6"] .crack-line,
+    .egg-wrap[data-crack="7"] .crack-line {
+      opacity: 1;
+    }
+
+    .egg-wrap.shake { animation: tapShake .26s ease; }
+
+    @keyframes tapShake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-3px) rotate(-1.3deg); }
+      50% { transform: translateX(3px) rotate(1.3deg); }
+      75% { transform: translateX(-2px) rotate(-.8deg); }
+    }
+
+    .egg-wrap.broken .egg-shell.left {
+      transform: translate(-44px, 46px) rotate(-22deg);
+      opacity: 0;
+    }
+
+    .egg-wrap.broken .egg-shell.right {
+      transform: translate(44px, 46px) rotate(22deg);
+      opacity: 0;
+    }
+
+    .egg-wrap.broken .egg-shine,
+    .egg-wrap.broken .cracks { opacity: 0; transition: opacity .25s ease; }
+
+    .inner-glow {
+      position: absolute;
+      width: 60%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 246, 251, 0.9), rgba(255, 201, 229, 0.38), transparent 70%);
+      opacity: 0;
+      pointer-events: none;
+      filter: blur(1px);
       z-index: 1;
     }
 
-    .envelope.open::before { transform: rotateX(180deg); }
+    .egg-wrap.broken .inner-glow { opacity: 1; animation: burstGlow .75s ease; }
 
-    .letter {
-      position: fixed;
-      inset: 50% auto auto 50%;
-      transform: translate(-50%, -44%) scale(.84);
+    @keyframes burstGlow {
+      0% { transform: scale(.72); opacity: .2; }
+      40% { transform: scale(1.1); opacity: .95; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+
+    .question-card {
+      position: absolute;
       width: min(92vw, 560px);
-      z-index: 8;
+      border-radius: 22px;
+      background: var(--glass);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--shadow), 0 0 34px rgba(255, 162, 211, 0.14);
+      padding: clamp(1.1rem, 4vw, 1.7rem);
+      text-align: center;
       opacity: 0;
       pointer-events: none;
-      border-radius: 20px;
-      border: 1px solid rgba(204, 143, 174, 0.5);
-      background:
-        linear-gradient(180deg, rgba(255, 244, 238, 0.95), rgba(255, 237, 228, 0.94)),
-        repeating-linear-gradient(0deg, rgba(190, 146, 114, 0.08), rgba(190, 146, 114, 0.08) 2px, transparent 2px, transparent 8px);
-      box-shadow: 0 26px 55px rgba(6, 4, 12, 0.52);
-      color: #60324d;
-      padding: clamp(1.1rem, 4vw, 1.7rem);
-      backdrop-filter: blur(4px);
-      transition: all .9s cubic-bezier(.2,.7,.2,1);
+      transform: translateY(8px) scale(.97);
+      transition: all .35s ease;
+      z-index: 5;
     }
 
-    .letter.open {
+    .question-card.show {
       opacity: 1;
       pointer-events: auto;
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    .letter-inner {
-      text-align: center;
-      display: grid;
-      gap: .8rem;
+      transform: translateY(0) scale(1);
     }
 
     .question {
-      margin: .15rem 0 .1rem;
-      font-family: "Cormorant Garamond", Georgia, serif;
-      font-size: clamp(2rem, 9vw, 3.4rem);
-      letter-spacing: .02em;
-      line-height: 1.1;
-      color: #4f1e3f;
-      text-shadow: 0 0 16px rgba(255, 176, 215, 0.35);
-    }
-
-    .mini {
       margin: 0;
-      font-size: clamp(.96rem, 3.5vw, 1.08rem);
-      line-height: 1.5;
-      color: #734260;
+      font-family: "Cormorant Garamond", Georgia, serif;
+      font-size: clamp(2rem, 10vw, 3.3rem);
+      line-height: 1.06;
+      letter-spacing: .02em;
+      color: #fff6fb;
+      text-shadow: 0 0 16px rgba(255, 177, 216, 0.36);
     }
 
-    .memory {
-      margin-top: .2rem;
-      border-top: 1px dashed rgba(115, 66, 96, 0.35);
-      padding-top: .6rem;
-      font-size: .92rem;
-      color: #875372;
-      min-height: 2.1rem;
-    }
-
-    .actions {
-      margin-top: .2rem;
+    .actions, .confirm-actions {
+      margin-top: .9rem;
       display: flex;
       justify-content: center;
-      gap: .7rem;
+      gap: .65rem;
       flex-wrap: wrap;
     }
 
     .btn {
       border: 0;
       border-radius: 999px;
+      padding: .64rem 1.25rem;
       font-size: 1rem;
-      padding: .68rem 1.3rem;
       cursor: pointer;
-      transition: transform .3s ease, box-shadow .3s ease, background .3s ease;
-    }
-
-    .yes {
-      color: #fff;
-      background: linear-gradient(180deg, var(--pink), var(--pink-strong));
-      box-shadow: 0 10px 22px rgba(255, 94, 165, 0.33);
-      font-weight: 600;
-    }
-
-    .no {
-      color: #fff;
-      background: linear-gradient(180deg, var(--no), #b987a5);
-      box-shadow: 0 8px 18px rgba(73, 33, 58, 0.2);
-      font-weight: 500;
+      transition: transform .25s ease, box-shadow .25s ease;
     }
 
     .btn:hover, .btn:focus-visible { transform: translateY(-2px); }
 
-    .yes:hover, .yes:focus-visible { box-shadow: 0 14px 24px rgba(255, 94, 165, 0.45); }
-
-    .after {
-      margin-top: .4rem;
-      font-size: 1.02rem;
-      color: #6e3f5d;
-      min-height: 1.4rem;
+    .yes {
+      color: #fff;
+      font-weight: 600;
+      background: linear-gradient(180deg, var(--pink), var(--pink-strong));
+      box-shadow: 0 10px 22px rgba(255, 93, 164, 0.33);
     }
 
-    .date-card {
-      margin-top: .25rem;
-      text-align: left;
-      border-radius: 14px;
-      padding: .9rem;
-      background: rgba(255, 230, 238, 0.58);
-      border: 1px solid rgba(169, 92, 125, 0.25);
+    .no, .muted {
+      color: #fff;
+      background: linear-gradient(180deg, #cda6bc, #b784a1);
+      box-shadow: 0 8px 18px rgba(68, 34, 54, 0.22);
+    }
+
+    .confirm {
+      margin-top: .75rem;
+      border-top: 1px dashed rgba(255, 221, 236, 0.4);
+      padding-top: .75rem;
+      display: none;
+    }
+
+    .confirm.show { display: block; }
+    .confirm p { margin: 0; }
+
+    .heart-pop {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(.6);
+      color: #ffd4e9;
+      font-size: clamp(2.4rem, 11vw, 4.8rem);
+      text-shadow: 0 0 24px rgba(255, 135, 196, 0.65);
       opacity: 0;
-      transform: translateY(8px);
-      transition: .8s ease;
+      pointer-events: none;
+      z-index: 10;
     }
 
-    .date-card.show { opacity: 1; transform: translateY(0); }
+    .heart-pop.show { animation: heartPop .95s ease forwards; }
 
-    .date-card h3 { margin: 0 0 .45rem; font-size: 1rem; }
-    .date-card ul { margin: 0 0 .55rem 1.1rem; padding: 0; line-height: 1.45; }
-    .date-card p { margin: 0; font-style: italic; }
+    @keyframes heartPop {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(.6); }
+      35% { opacity: 1; }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.2); }
+    }
 
     .sparkle {
       position: absolute;
       width: 5px;
       height: 5px;
-      border-radius: 999px;
-      background: #fff7fb;
-      box-shadow: 0 0 8px rgba(255, 205, 232, 0.9);
-      animation: sparkle 1.4s ease forwards;
+      border-radius: 50%;
+      background: #fff8fc;
+      box-shadow: 0 0 8px rgba(255, 201, 230, 0.95);
+      animation: sparkle .95s ease forwards;
     }
 
     @keyframes sparkle {
       from { opacity: 0; transform: translateY(0) scale(.7); }
-      35% { opacity: 1; }
-      to { opacity: 0; transform: translateY(-18px) scale(1.25); }
+      30% { opacity: 1; }
+      to { opacity: 0; transform: translateY(-18px) scale(1.2); }
     }
   </style>
 </head>
 <body>
   <div class="petal-layer" id="petalLayer"></div>
-  <div class="particle-layer" id="particleLayer"></div>
-  <div class="heart-haze" id="heartHaze"></div>
+  <div class="sparkle-layer" id="sparkleLayer"></div>
   <div class="scene-dim" id="sceneDim"></div>
 
   <main>
-    <section class="card" id="mainCard">
-      <h1>Hi my love</h1>
-      <p class="sub">There’s something I’ve been wanting to ask you…</p>
+    <section class="stage">
+      <div class="egg-wrap" id="egg" role="button" tabindex="0" aria-label="Tap to crack the egg" data-crack="0">
+        <div class="egg-shell left"></div>
+        <div class="egg-shell right"></div>
+        <div class="egg-shine"></div>
+        <div class="inner-glow"></div>
+        <div class="cracks">
+          <span class="crack-line c1"></span>
+          <span class="crack-line c2"></span>
+          <span class="crack-line c3"></span>
+          <span class="crack-line c4"></span>
+          <span class="crack-line c5"></span>
+          <span class="crack-line c6"></span>
+        </div>
+      </div>
+
+      <article class="question-card" id="questionCard" aria-live="polite">
+        <h1 class="question">Will you be my Valentine?</h1>
+        <div class="actions">
+          <button class="btn yes" id="yesBtn">Yes</button>
+          <button class="btn no" id="noBtn">No</button>
+        </div>
+
+        <section class="confirm" id="confirmBox">
+          <p>Are you sure?</p>
+          <div class="confirm-actions">
+            <button class="btn muted" id="sureBtn">Yes, I’m sure</button>
+            <button class="btn yes" id="waitBtn">Wait…</button>
+          </div>
+        </section>
+      </article>
     </section>
   </main>
 
-  <div class="envelope-wrap" id="envelopeWrap">
-    <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open letter"></div>
-  </div>
-
-  <article class="letter" id="letter" aria-live="polite">
-    <div class="letter-inner">
-      <p class="mini">I chose you, and I keep choosing you—every day.</p>
-      <h2 class="question">Will you be my Valentine?</h2>
-      <p class="mini">Thank you for being my home, my peace, and my favorite person.</p>
-      <p class="memory" id="memoryLine">P.S. I love the way you laugh and make ordinary moments beautiful.</p>
-
-      <div class="actions">
-        <button class="btn yes" id="yesBtn">Yes 💖</button>
-        <button class="btn no" id="noBtn">No</button>
-      </div>
-
-      <p class="after" id="afterText"></p>
-
-      <section class="date-card" id="dateCard">
-        <h3>Date idea unlocked ✨</h3>
-        <ul>
-          <li>Cozy dinner with candles and soft music</li>
-          <li>Dessert walk under the evening lights</li>
-          <li>Blanket + movie night, just us</li>
-        </ul>
-        <p>No matter what we do, my favorite part is you.</p>
-      </section>
-    </div>
-  </article>
+  <div class="heart-pop" id="heartPop">💖</div>
 
   <script>
     const petalLayer = document.getElementById('petalLayer');
-    const particleLayer = document.getElementById('particleLayer');
-    const envelopeWrap = document.getElementById('envelopeWrap');
-    const envelope = document.getElementById('envelope');
-    const letter = document.getElementById('letter');
-    const heartHaze = document.getElementById('heartHaze');
+    const sparkleLayer = document.getElementById('sparkleLayer');
     const sceneDim = document.getElementById('sceneDim');
-    const mainCard = document.getElementById('mainCard');
+    const egg = document.getElementById('egg');
+    const questionCard = document.getElementById('questionCard');
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
-    const afterText = document.getElementById('afterText');
-    const dateCard = document.getElementById('dateCard');
-    const memoryLine = document.getElementById('memoryLine');
+    const confirmBox = document.getElementById('confirmBox');
+    const sureBtn = document.getElementById('sureBtn');
+    const waitBtn = document.getElementById('waitBtn');
+    const heartPop = document.getElementById('heartPop');
 
-    const memories = [
-      'P.S. I love how your hugs make everything feel safe.',
-      'P.S. I love how your smile can calm my whole day.',
-      'P.S. I love how we can be silly and still feel at home.',
-      'P.S. I love how being with you always feels like peace.'
-    ];
+    const tapsToBreak = 6;
+    let tapCount = 0;
+    let opened = false;
+    let answeredNo = false;
 
-    let surpriseShown = false;
-    let memoryIndex = 0;
-
-    function createPetals(count = 18) {
+    function createPetals(count = 14) {
       for (let i = 0; i < count; i++) {
-        const p = document.createElement('div');
-        p.className = 'petal';
-        p.style.left = `${Math.random() * 100}%`;
-        p.style.setProperty('--drift', `${(Math.random() * 110 - 55).toFixed(0)}px`);
-        p.style.animationDuration = `${(Math.random() * 9 + 18).toFixed(2)}s`;
-        p.style.animationDelay = `${(-Math.random() * 12).toFixed(2)}s`;
-        p.addEventListener('mouseenter', triggerSurprise, { once: true });
-        p.addEventListener('click', triggerSurprise, { once: true });
-        petalLayer.appendChild(p);
+        const petal = document.createElement('div');
+        petal.className = 'petal';
+        petal.style.left = `${Math.random() * 100}%`;
+        petal.style.setProperty('--drift', `${(Math.random() * 95 - 47).toFixed(0)}px`);
+        petal.style.animationDuration = `${(Math.random() * 7 + 15).toFixed(2)}s`;
+        petal.style.animationDelay = `${(-Math.random() * 8).toFixed(2)}s`;
+        petalLayer.appendChild(petal);
       }
     }
 
-    function createParticles(count = 16) {
-      for (let i = 0; i < count; i++) {
-        const dot = document.createElement('div');
-        dot.className = 'particle';
-        dot.style.left = `${Math.random() * 100}%`;
-        dot.style.top = `${Math.random() * 100}%`;
-        dot.style.animationDuration = `${(Math.random() * 8 + 9).toFixed(2)}s`;
-        dot.style.animationDelay = `${(-Math.random() * 7).toFixed(2)}s`;
-        particleLayer.appendChild(dot);
-      }
-    }
-
-    function sparkleBurst(x = innerWidth / 2, y = innerHeight / 2, amount = 18) {
+    function sparkleBurst(x = innerWidth / 2, y = innerHeight / 2, amount = 24) {
       for (let i = 0; i < amount; i++) {
-        const s = document.createElement('div');
-        s.className = 'sparkle';
-        s.style.left = `${x + (Math.random() * 100 - 50)}px`;
-        s.style.top = `${y + (Math.random() * 75 - 38)}px`;
-        particleLayer.appendChild(s);
-        setTimeout(() => s.remove(), 1450);
+        const dot = document.createElement('div');
+        dot.className = 'sparkle';
+        dot.style.left = `${x + (Math.random() * 170 - 85)}px`;
+        dot.style.top = `${y + (Math.random() * 120 - 60)}px`;
+        sparkleLayer.appendChild(dot);
+        setTimeout(() => dot.remove(), 1000);
       }
     }
 
-    function triggerSurprise() {
-      if (surpriseShown) return;
-      surpriseShown = true;
-      heartHaze.classList.add('show');
-      sceneDim.classList.add('show');
-      mainCard.classList.add('focus-blur');
-      setTimeout(() => envelopeWrap.classList.add('show'), 900);
-      setTimeout(() => heartHaze.classList.remove('show'), 2600);
-    }
+    function crackEgg() {
+      if (opened) return;
+      tapCount += 1;
+      egg.dataset.crack = String(Math.min(tapCount, tapsToBreak));
+      egg.classList.remove('shake');
+      void egg.offsetWidth;
+      egg.classList.add('shake');
+      sparkleBurst(innerWidth * 0.5, innerHeight * 0.5, 8);
 
-    function openLetter() {
-      envelope.classList.add('open');
-      letter.classList.add('open');
-      sparkleBurst(innerWidth * 0.52, innerHeight * 0.47, 22);
+      if (tapCount >= tapsToBreak) {
+        opened = true;
+        egg.classList.add('broken');
+        sceneDim.classList.add('show');
+        sparkleBurst(innerWidth * 0.5, innerHeight * 0.48, 30);
+        setTimeout(() => {
+          egg.style.pointerEvents = 'none';
+          questionCard.classList.add('show');
+        }, 230);
+      }
     }
 
     function celebrateYes() {
-      afterText.textContent = 'Yay 💖 I can’t wait to celebrate with you.';
-      dateCard.classList.add('show');
-      sparkleBurst(innerWidth * 0.5, innerHeight * 0.52, 30);
+      confirmBox.classList.remove('show');
+      sparkleBurst(innerWidth * 0.5, innerHeight * 0.52, 58);
+      heartPop.classList.remove('show');
+      void heartPop.offsetWidth;
+      heartPop.classList.add('show');
       document.querySelectorAll('.petal').forEach((petal) => {
-        const current = parseFloat(petal.style.animationDuration);
-        petal.style.animationDuration = `${Math.max(10, current - 4)}s`;
+        const duration = parseFloat(petal.style.animationDuration);
+        petal.style.animationDuration = `${Math.max(7, duration - 5)}s`;
       });
     }
 
-    function handleNo() {
-      afterText.textContent = 'I’ll keep loving you, always. 💗';
+    function onNo() {
+      if (answeredNo) return;
+      confirmBox.classList.add('show');
     }
 
-    function rotateMemory() {
-      memoryIndex = (memoryIndex + 1) % memories.length;
-      memoryLine.textContent = memories[memoryIndex];
+    function confirmNo() {
+      answeredNo = true;
+      confirmBox.classList.remove('show');
+      noBtn.disabled = true;
+      noBtn.style.opacity = '0.6';
+      noBtn.style.cursor = 'default';
     }
 
-    envelope.addEventListener('click', openLetter);
-    envelope.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        openLetter();
+    function waitReturn() {
+      confirmBox.classList.remove('show');
+    }
+
+    egg.addEventListener('click', crackEgg);
+    egg.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        crackEgg();
       }
     });
 
     yesBtn.addEventListener('click', celebrateYes);
-    noBtn.addEventListener('click', handleNo);
-
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 18) triggerSurprise();
-    }, { passive: true });
-
-    setTimeout(triggerSurprise, 12000);
-    setInterval(rotateMemory, 4200);
+    noBtn.addEventListener('click', onNo);
+    sureBtn.addEventListener('click', confirmNo);
+    waitBtn.addEventListener('click', waitReturn);
 
     createPetals();
-    createParticles();
   </script>
 </body>
 </html>
