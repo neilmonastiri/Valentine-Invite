@@ -81,9 +81,101 @@
 
     .stage {
       width: min(92vw, 560px);
-      min-height: 320px;
+      min-height: 360px;
       display: grid;
       place-items: center;
+    }
+
+    .egg-area {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: min(300px, 82vw);
+      padding: 1rem 0 .5rem;
+    }
+
+    .bouquet {
+      position: absolute;
+      inset: auto 50% -8px auto;
+      transform: translateX(50%);
+      width: min(300px, 82vw);
+      height: 120px;
+      pointer-events: none;
+      z-index: 0;
+      filter: drop-shadow(0 10px 16px rgba(7, 5, 16, 0.35));
+    }
+
+    .sprig {
+      position: absolute;
+      bottom: 0;
+      width: 3px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(141, 196, 146, 0.5), rgba(110, 171, 124, 0.72));
+      transform-origin: bottom center;
+      transition: transform .24s ease;
+    }
+
+    .sprig::before,
+    .sprig::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(149, 201, 151, 0.4);
+      top: 30%;
+    }
+
+    .sprig::before { left: -15px; transform: rotate(-28deg); }
+    .sprig::after { right: -15px; transform: rotate(28deg); }
+
+    .blossom {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fff6fb, #ffd5ea 70%);
+      box-shadow: 0 0 10px rgba(255, 198, 227, 0.5);
+      opacity: 0.9;
+      transition: transform .24s ease;
+    }
+
+    .b1 { left: 18%; bottom: 35px; }
+    .b2 { left: 29%; bottom: 56px; width: 14px; height: 14px; }
+    .b3 { left: 42%; bottom: 62px; width: 16px; height: 16px; }
+    .b4 { left: 58%; bottom: 62px; width: 16px; height: 16px; }
+    .b5 { left: 71%; bottom: 56px; width: 14px; height: 14px; }
+    .b6 { left: 80%; bottom: 35px; }
+
+    .s1 { left: 22%; height: 50px; transform: rotate(-18deg); }
+    .s2 { left: 35%; height: 64px; transform: rotate(-9deg); }
+    .s3 { left: 50%; height: 70px; transform: rotate(0deg); }
+    .s4 { left: 65%; height: 64px; transform: rotate(9deg); }
+    .s5 { left: 78%; height: 50px; transform: rotate(18deg); }
+
+    .egg-area.tap-feedback .sprig { transform: translateY(2px) rotate(var(--r, 0deg)); }
+    .egg-area.tap-feedback .blossom { transform: translateY(2px) scale(0.97); }
+
+    .hint {
+      margin-top: .65rem;
+      font-size: .87rem;
+      color: rgba(255, 233, 245, 0.72);
+      letter-spacing: .01em;
+      text-align: center;
+      animation: hintPulse 2.1s ease-in-out infinite;
+      transition: opacity .35s ease;
+      user-select: none;
+    }
+
+    .hint.hide {
+      opacity: 0;
+      pointer-events: none;
+      animation: none;
+    }
+
+    @keyframes hintPulse {
+      0%, 100% { opacity: 0.55; transform: translateY(0); }
+      50% { opacity: 0.92; transform: translateY(-2px); }
     }
 
     .egg-wrap {
@@ -95,6 +187,7 @@
       cursor: pointer;
       transition: transform .2s ease;
       -webkit-tap-highlight-color: transparent;
+      z-index: 2;
     }
 
     .egg-wrap:active { transform: scale(.98); }
@@ -339,19 +432,33 @@
 
   <main>
     <section class="stage">
-      <div class="egg-wrap" id="egg" role="button" tabindex="0" aria-label="Tap to crack the egg" data-crack="0">
-        <div class="egg-shell left"></div>
-        <div class="egg-shell right"></div>
-        <div class="egg-shine"></div>
-        <div class="inner-glow"></div>
-        <div class="cracks">
-          <span class="crack-line c1"></span>
-          <span class="crack-line c2"></span>
-          <span class="crack-line c3"></span>
-          <span class="crack-line c4"></span>
-          <span class="crack-line c5"></span>
-          <span class="crack-line c6"></span>
+      <div class="egg-area" id="eggArea">
+        <div class="bouquet" aria-hidden="true">
+          <span class="sprig s1" style="--r:-18deg"></span>
+          <span class="sprig s2" style="--r:-9deg"></span>
+          <span class="sprig s3" style="--r:0deg"></span>
+          <span class="sprig s4" style="--r:9deg"></span>
+          <span class="sprig s5" style="--r:18deg"></span>
+          <span class="blossom b1"></span><span class="blossom b2"></span><span class="blossom b3"></span>
+          <span class="blossom b4"></span><span class="blossom b5"></span><span class="blossom b6"></span>
         </div>
+
+        <div class="egg-wrap" id="egg" role="button" tabindex="0" aria-label="Tap to crack the egg" data-crack="0">
+          <div class="egg-shell left"></div>
+          <div class="egg-shell right"></div>
+          <div class="egg-shine"></div>
+          <div class="inner-glow"></div>
+          <div class="cracks">
+            <span class="crack-line c1"></span>
+            <span class="crack-line c2"></span>
+            <span class="crack-line c3"></span>
+            <span class="crack-line c4"></span>
+            <span class="crack-line c5"></span>
+            <span class="crack-line c6"></span>
+          </div>
+        </div>
+
+        <p class="hint" id="hintText">Tap me to see what happens ✨</p>
       </div>
 
       <article class="question-card" id="questionCard" aria-live="polite">
@@ -378,7 +485,9 @@
     const petalLayer = document.getElementById('petalLayer');
     const sparkleLayer = document.getElementById('sparkleLayer');
     const sceneDim = document.getElementById('sceneDim');
+    const eggArea = document.getElementById('eggArea');
     const egg = document.getElementById('egg');
+    const hintText = document.getElementById('hintText');
     const questionCard = document.getElementById('questionCard');
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
@@ -417,11 +526,20 @@
 
     function crackEgg() {
       if (opened) return;
+
+      if (tapCount === 0) {
+        hintText.classList.add('hide');
+      }
+
       tapCount += 1;
       egg.dataset.crack = String(Math.min(tapCount, tapsToBreak));
+
       egg.classList.remove('shake');
+      eggArea.classList.remove('tap-feedback');
       void egg.offsetWidth;
       egg.classList.add('shake');
+      eggArea.classList.add('tap-feedback');
+      setTimeout(() => eggArea.classList.remove('tap-feedback'), 220);
       sparkleBurst(innerWidth * 0.5, innerHeight * 0.5, 8);
 
       if (tapCount >= tapsToBreak) {
